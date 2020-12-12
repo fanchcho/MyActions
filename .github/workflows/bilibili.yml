@@ -1,9 +1,9 @@
-name: 企鹅读书
+name: bilibili 签到
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '0 9 * * *'
   watch:
     type: [started]
 
@@ -15,17 +15,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
+
       - name: 'Set up Python'
         uses: actions/setup-python@v1
         with:
           python-version: 3.8
-         
+
       - name: 'Install requirements'
-        run: pip install -r ./requirements.txt 
-        
-      - name: '运行【企鹅读书】' 
-        run: python3 ./scripts/qq_read.py 
+        run: pip install -r ./requirements.txt
+
+      - name: '运行【bilibili 签到】'
+        run: python3 ./scripts/bilibili.py
         env:
             CONFIG: ${{ secrets.CONFIG }}
 

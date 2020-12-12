@@ -32,14 +32,15 @@ def bark(bark_machine_code, title, content):
     """
     try:
         print('正在使用 bark 推送消息...', end='')
-        response = requests.get(f'https://api.day.app/{bark_machine_code}/{title}/{content}').json()
+        response = requests.get(f'https://api.day.app/{bark_machine_code}/{title}/{content}', timeout=15).json()
         if response['code'] == 200:
             print('推送成功！')
         else:
             print('推送失败！')
     except:
         symbol = '-' * 50
-        print(f'\n[⚠ /Scripts/utils/notify.py - bark(bark_machine_code, title, content) bark推送错误]\n{symbol}\n{traceback.format_exc()}{symbol}')
+        print(f'\n[⚠ /Scripts/utils/notify.py - bark(bark_machine_code, title, content) bark推送错误]')
+        # print(f'\n[⚠ /Scripts/utils/notify.py - bark(bark_machine_code, title, content) bark推送错误]\n{symbol}\n{traceback.format_exc()}{symbol}')
 
 
 def telegram_bot(tg_bot_token, tg_user_id, title, content):
@@ -58,14 +59,15 @@ def telegram_bot(tg_bot_token, tg_user_id, title, content):
             'text': f'{title}\n\n{content}',
             'disable_web_page_preview': 'true'
         }
-        response = requests.post(url=f'https://api.telegram.org/bot{tg_bot_token}/sendMessage', data=data).json()
+        response = requests.post(url=f'https://api.telegram.org/bot{tg_bot_token}/sendMessage', data=data, timeout=15).json()
         if response['ok']:
             print('推送成功！')
         else:
             print('推送失败！')
     except:
         symbol = '-' * 50
-        print(f'\n[⚠ /Scripts/utils/notify.py - telegram_bot(tg_bot_token, tg_user_id, title, content) telegram_bot推送错误]\n{symbol}\n{traceback.format_exc()}{symbol}')
+        print(f'\n[⚠ /Scripts/utils/notify.py - telegram_bot(tg_bot_token, tg_user_id, title, content) telegram_bot推送错误]')
+        # print(f'\n[⚠ /Scripts/utils/notify.py - telegram_bot(tg_bot_token, tg_user_id, title, content) telegram_bot推送错误]\n{symbol}\n{traceback.format_exc()}{symbol}')
 
 
 def dingding_bot(access_token, secret, title, content):
@@ -91,14 +93,15 @@ def dingding_bot(access_token, secret, title, content):
             'msgtype': 'text',
             'text': {'content': f'{title}\n\n{content}'}
         }
-        response = requests.post(url=url, data=json.dumps(data), headers=headers).json()
+        response = requests.post(url=url, data=json.dumps(data), headers=headers, timeout=15).json()
         if not response['errcode']:
             print('推送成功！')
         else:
             print('推送失败！')
     except:
         symbol = '-' * 50
-        print(f'\n[⚠ /Scripts/utils/notify.py - dingding_bot(access_token, secret, title, content) dingding_bot推送错误]\n{symbol}\n{traceback.format_exc()}{symbol}')
+        print(f'\n[⚠ /Scripts/utils/notify.py - dingding_bot(access_token, secret, title, content) dingding_bot推送错误]')
+        # print(f'\n[⚠ /Scripts/utils/notify.py - dingding_bot(access_token, secret, title, content) dingding_bot推送错误]\n{symbol}\n{traceback.format_exc()}{symbol}')
 
 
 def server_chan(sckey, title, content):
@@ -114,11 +117,12 @@ def server_chan(sckey, title, content):
             'text': title,
             'desp': content
         }
-        response = requests.post('https://sc.ftqq.com/%s.send' % sckey, data=data)
+        response = requests.post('https://sc.ftqq.com/%s.send' % sckey, data=data, timeout=15)
         print(response.text)
     except:
         symbol = '-' * 50
-        print(f'\n[⚠ /Scripts/utils/notify.py - server_chan(sckey, title, content) serverJ推送错误]\n{symbol}\n{traceback.format_exc()}{symbol}')
+        print(f'\n[⚠ /Scripts/utils/notify.py - server_chan(sckey, title, content) serverJ推送错误]')
+        # print(f'\n[⚠ /Scripts/utils/notify.py - server_chan(sckey, title, content) serverJ推送错误]\n{symbol}\n{traceback.format_exc()}{symbol}')
 
 
 def send(title, content, notify_mode):
@@ -129,14 +133,14 @@ def send(title, content, notify_mode):
     :return:
     """
     try:
-        config = read()  # 调用utils包中的config.py的read函数
+        config_latest, config = read(skip_check_version=True)  # 调用utils包中的config.py的read函数并且跳过版本检测
         if config['notify']['enable']:
             for i in notify_mode:
                 if i == 'bark':
                     # bark
                     bark_machine_code = config['notify']['type']['bark']['BARK_MACHINE_CODE']
                     if bark_machine_code:
-                        bark(bark_machine_code, title, content)
+                        bark(bark_machine_code=bark_machine_code, title=title, content=content)
                     else:
                         print('未启用 bark')
                     continue
