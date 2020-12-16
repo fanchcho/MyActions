@@ -32,7 +32,7 @@ def bark(bark_machine_code, title, content):
     """
     try:
         print('正在使用 bark 推送消息...', end='')
-        response = requests.get(f'https://api.day.app/{bark_machine_code}/{title}/{content}', timeout=15).json()
+        response = requests.get(f'{bark_machine_code}{title}/{content}', timeout=15).json()
         if response['code'] == 200:
             print('推送成功！')
         else:
