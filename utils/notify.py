@@ -32,7 +32,7 @@ def bark(bark_machine_code, title, content):
     """
     try:
         print('正在使用 bark 推送消息...', end='')
-        response = requests.get(f'{bark_machine_code}{title}/{content}', timeout=15).json()
+        response = requests.get(f'{bark_machine_code}/{title}/{content}', timeout=15).json()
         if response['code'] == 200:
             print('推送成功！')
         else:
@@ -113,12 +113,16 @@ def server_chan(sckey, title, content):
     :return:
     """
     try:
+        print('开始使用 Server酱 推送消息...', end='')
         data = {
             'text': title,
-            'desp': content
+            'desp': content.replace('\n', '\n\n')
         }
-        response = requests.post('https://sc.ftqq.com/%s.send' % sckey, data=data, timeout=15)
-        print(response.text)
+        response = requests.post('https://sc.ftqq.com/%s.send' % sckey, data=data, timeout=15).json()
+        if response['errmsg'] == 'success':
+            print('推送成功！')
+        else:
+            print('推送失败！')
     except:
         symbol = '-' * 50
         print(f'\n[⚠ /Scripts/utils/notify.py - server_chan(sckey, title, content) serverJ推送错误]')

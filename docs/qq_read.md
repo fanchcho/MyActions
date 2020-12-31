@@ -59,9 +59,9 @@ notify:
 # 脚本配置信息
 jobs:
   qq_read:
-    # 使用前请阅读 https://raw.githubusercontent.com/TNanko/Scripts/master/scripts/qq_read.py 前30行使用说明
+    # 使用前请阅读 https://github.com/TNanko/Scripts/blob/master/docs/qq_read.md
     enable: false # true 启用脚本； false 不启用脚本（默认不启用脚本）
-    version: 1.1.0
+    version: v1.3.5
     skip_check_script_version: false # 默认不跳过版本检测
     notify: false # true 启用消息推送； false 不启用消息推送（默认不发消息推送）
     notify_mode:  # 如果全都配置了，可以根据自身需求进行消息推送方式的选择，不需要的可以注释掉或者删除。由于 bark 消息长度的限制，不推荐 bark
@@ -69,6 +69,9 @@ jobs:
       - telegram_bot
       - dingding_bot
       - server_chan
+    scripts_filename: 'qq_read.py'
+    schedule:
+      cron: '*/10 * * * *'
     parameters:
       UPLOAD_TIME: 5 # 每次上传阅读时长（单位分钟）
       MAX_READ_TIME: 600 # 每日最大阅读时长（单位分钟）

@@ -6,11 +6,6 @@
 # @Site    : https://tnanko.github.io
 # @File    : bilibili.py
 # @Software: PyCharm
-"""
-1.访问网站 http://live.bilibili.com/ 并登录你的 bilibili 账号
-2.1 以 Chrome 浏览器为例，按 F12 进入调试模式，在调试窗口上方选择 Network ，刷新一下网页，随意点下方一个文件，然后找到 Cookie 并复制到配置文件中参数 COOKIE
-2.2 如果你使用 圈x 、 Surge 、 Loon 或者 Shadowrocket 等代理软件，可以使用访问网页 https://github.com/chavyleung/scripts/tree/master/bilibili 并使用此网页提供的方法来获取 Cookie
-"""
 import sys
 import os
 cur_path = os.path.abspath(os.path.dirname(__file__))
