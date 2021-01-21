@@ -26,7 +26,7 @@ jobs:
               run: pip install -r ./requirements.txt
 
             - name: "运行 喜马拉雅极速版"
-              run: python3 xmly_speed.py
+              run: python3 ./scripts/xmly_speed.py
               env:
                   XMLY_SPEED_COOKIE: ${{ github.event.client_payload.XMLY_SPEED_COOKIE || secrets.XMLY_SPEED_COOKIE }}
                   XMLY_ACCUMULATE_TIME: ${{ github.event.client_payload.XMLY_ACCUMULATE_TIME || secrets.XMLY_ACCUMULATE_TIME }}
