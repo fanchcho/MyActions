@@ -45,7 +45,7 @@ def compare_version(config_latest, config_current):
                 print('未获取到最新配置文件的版本号')
             return config_latest, config_current
         else:
-            print('参数 skip_check_config_version = true 跳过配置文件版本检测...')
+            print('函数参数 skip_check_config_version = true 跳过配置文件版本检测...')
     except:
         print('程序运行异常，跳过配置文件版本检测...')
         return None, config_current
@@ -55,25 +55,30 @@ def read(skip_check_version=False):
     支持 github action 和本地文件读取（github action 未测试）
     :return: 返回配置信息
     """
-    if 'CONFIG' in os.environ:
-        config_current = yaml.load(os.environ['CONFIG'], Loader=yaml.FullLoader)
-        # 配置文件的版本检测
-        config_latest = None
-        if not skip_check_version:
-            config_latest = check_version()
-            config_latest, config_current = compare_version(config_latest=config_latest, config_current=config_current)
-        # 报错或者跳过版本检测直接返回当前配置
-        return config_latest, config_current
-    else:
-        path = BASE_DIR + '/config/config.yml'
-        with open(path, mode='r', encoding='utf-8') as obj:
-            config_current = yaml.load(obj, Loader=yaml.FullLoader)  # <class 'dict'>
+    try:
+        if 'CONFIG' in os.environ:
+            config_current = yaml.load(os.environ['CONFIG'], Loader=yaml.FullLoader)
+            # 配置文件的版本检测
             config_latest = None
             if not skip_check_version:
-                # 配置文件的版本检测
                 config_latest = check_version()
                 config_latest, config_current = compare_version(config_latest=config_latest, config_current=config_current)
+            # 报错或者跳过版本检测直接返回当前配置
             return config_latest, config_current
+        else:
+            path = BASE_DIR + '/config/config.yml'
+            with open(path, mode='r', encoding='utf-8') as obj:
+                config_current = yaml.load(obj, Loader=yaml.FullLoader)  # <class 'dict'>
+                config_latest = None
+                if not skip_check_version:
+                    # 配置文件的版本检测
+                    config_latest = check_version()
+                    config_latest, config_current = compare_version(config_latest=config_latest, config_current=config_current)
+                return config_latest, config_current
+    except:
+        print(traceback.format_exc())
+        print('配置文件错误！请根据上述提示检查配置文件的 yaml 语法是否正确！')
+        return
 
 
 if __name__ == '__main__':

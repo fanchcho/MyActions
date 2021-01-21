@@ -1,5 +1,5 @@
 name: TNanko's Scripts Config File
-version: v1.3.6
+version: v1.5.0
 skip_check_config_version: false # 默认不跳过配置文件的版本检测
 
 # 消息推送
@@ -26,19 +26,24 @@ notify:
 # 脚本配置信息
 jobs:
   qq_read:
-    # 使用前请阅读 https://github.com/TNanko/Scripts/blob/master/docs/qq_read.md
+    # 使用前请阅读 https://github.com/TNanko/leam/blob/leam/docs/qq_read.md
     enable: false # true 启用脚本； false 不启用脚本（默认不启用脚本）
-    version: v1.3.5
+    version: v1.4.2
     skip_check_script_version: false # 默认不跳过版本检测
     notify: true # true 启用消息推送； false 不启用消息推送（默认发消息推送）
-    notify_mode:  # 如果全都配置了，可以根据自身需求进行消息推送方式的选择，不需要的可以注释掉或者删除。由于 bark 消息长度的限制，不推荐 bark
+    notify_mode:  # 如果全都配置了，可以根据自身需求进行消息推送方式的选择，不需要的可以注释掉或者删除（整行删除）。由于 bark 消息长度的限制，不推荐 bark
       - bark
       - telegram_bot
       - dingding_bot
       - server_chan
     scripts_filename: 'qq_read.py'
+    process_delay: 1 # 进程延迟，建议0-5（单位秒）
+    process_pool_num: 10 # 进程池数量。对于性能较差的机器且账号多，建议加大延迟，减小进程池大小
     schedule:
       cron: '*/10 * * * *'
+    log:
+      enable: true # 启用日志
+      valid_period: 7 # 默认保留近 7 天的日志
     parameters:
       UPLOAD_TIME: 5 # 每次上传阅读时长（单位分钟）
       MAX_READ_TIME: 600 # 每日最大阅读时长（单位分钟）
@@ -49,9 +54,9 @@ jobs:
           WITHDRAW: false # 默认不启用提现功能，启用前必须保证账号已经实名认证（模式：满额提现，每天23点以后开始尝试提现，每次提现10元，不满10元不提现，不使用2元和1元提现次数）
           HOSTING_MODE: false # 默认不启用托管提现，若启用则必须在 WITHDRAW 为 true 下才有效（模式：托管提现，建议放弃薅此羊毛时候打开，将使用剩余的2元和1元提现次数将剩余金币最大程度转化为rmb）
   bilibili:
-    # 使用前请阅读 https://raw.githubusercontent.com/TNanko/Scripts/master/scripts/bilibil.py 前12行使用说明
+    # 使用前请阅读 https://github.com/TNanko/leam/blob/leam/docs/bilibili.md
     enable: false # true 启用脚本； false 不启用脚本（默认不启用脚本）
-    version: v1.0.5
+    version: v1.1.1
     skip_check_script_version: false # 默认不跳过版本检测
     notify: true # true 启用消息推送； false 不启用消息推送（默认发消息推送）
     notify_mode:  # 如果全都配置了，可以根据自身需求进行消息推送方式的选择，不需要的可以注释掉或者删除。推荐 bark
@@ -61,7 +66,30 @@ jobs:
       - server_chan
     scripts_filename: 'bilibili.py'
     schedule:
+      cron: '5 1 * * *'
+    log:
+      enable: true # 启用日志
+      valid_period: 7 # 默认保留近 7 天的日志
+    parameters:
+      ACCOUNTS:
+        - COOKIE:
+  52pojie:
+    # 使用前请阅读 https://raw.githubusercontent.com/TNanko/leam/master/scripts/52pojie.py
+    enable: false # true 启用脚本； false 不启用脚本（默认不启用脚本）
+    version: v1.0.0
+    skip_check_script_version: false # 默认不跳过版本检测
+    notify: true # true 启用消息推送； false 不启用消息推送（默认发消息推送）
+    notify_mode:  # 如果全都配置了，可以根据自身需求进行消息推送方式的选择，不需要的可以注释掉或者删除。推荐 bark
+      - bark
+      - telegram_bot
+      - dingding_bot
+      - server_chan
+    scripts_filename: '51pojie.py'
+    schedule:
       cron: '10 1 * * *'
+    log:
+      enable: true # 启用日志
+      valid_period: 7 # 默认保留近 7 天的日志
     parameters:
       ACCOUNTS:
         - COOKIE:
